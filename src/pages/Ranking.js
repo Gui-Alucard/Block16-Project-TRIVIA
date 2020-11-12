@@ -51,6 +51,8 @@ class Ranking extends React.Component {
       return 0;
     });
 
+    console.log(ranking);
+
     return (
       <section>
         <p data-testid="ranking-title">Ranking:</p>

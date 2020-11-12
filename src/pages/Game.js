@@ -23,6 +23,7 @@ class Game extends Component {
     this.handleAnswer = this.handleAnswer.bind(this);
     this.handleScore = this.handleScore.bind(this);
     this.handleClickButtonNext = this.handleClickButtonNext.bind(this);
+    this.scoreStore = this.scoreStore.bind(this);
   }
 
   componentDidMount() {
@@ -30,6 +31,10 @@ class Game extends Component {
   }
 
   componentDidUpdate() {
+    this.scoreLocalStorage();
+  }
+
+  componentWillUnmount() {
     this.scoreLocalStorage();
   }
 
@@ -110,7 +115,7 @@ class Game extends Component {
       });
     } else {
       this.setState({ disableNextBtn: false, clicked: true });
-      this.handleScore();
+      this.scoreStore();
       // precisa setar clicked pq é a condição para o btn renderizar aqui - line 152
       return history.push('/feedback');
     }
