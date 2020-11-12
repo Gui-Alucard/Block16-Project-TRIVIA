@@ -22,19 +22,28 @@ class Timer extends React.Component {
 
   componentDidUpdate() {
     const { timeLeft } = this.state;
-    const { answered, answeredAction } = this.props;
-    const action = {
-      timeout: true,
-    };
+    const { answered } = this.props;
     const oneSecond = 1000;
-    if (answered === false) setTimeout(this.decreaseTime, oneSecond);
-    if (timeLeft < 1) answeredAction(action);
+    if (timeLeft > 0 && answered === false) setTimeout(this.decreaseTime, oneSecond);
+    // const action = {
+    //   time: 30,
+    //   answered: true,
+    //   timeout: true,
+    // };
+    // if (timeLeft < 1) answeredAction(action);
+    // Preciso de uma forma de dar esse dispatch uma unica vez e não dispará-lo
+  }
+
+  componentWillUnmount() {
+    const { timeLeft } = this.state;
+    if (timeLeft < 1) console.log('desmontou');
   }
 
   decreaseTime() {
     const { timeLeft } = this.state;
-    const trinta = 30;
-    if (timeLeft > 0 && timeLeft <= trinta) this.setState({ timeLeft: timeLeft - 1 });
+    const { answered } = this.props;
+    if (timeLeft > 0) this.setState({ timeLeft: timeLeft - 1 });
+    if (answered === true) this.setState({ timeLeft: 30 }); // responsável por resetar o timer
   }
 
   render() {
@@ -48,6 +57,11 @@ class Timer extends React.Component {
     );
   }
 }
+
+Timer.defaultProps = {
+  answered: false,
+  time: 30,
+};
 
 Timer.propTypes = {
   answered: propTypes.bool.isRequired,

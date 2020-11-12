@@ -25,10 +25,8 @@ export default function (state = INITIAL_STATE, action) {
       score: state.score + action.score,
       assertions: state.assertions + action.assertions,
       answered: action.answered,
+      timeout: action.timeout,
     };
-  case PLAYER_DATA:
-    return {
-      ...state, ...action.payload };
   case ANSWERED:
     return {
       ...state,
@@ -36,6 +34,9 @@ export default function (state = INITIAL_STATE, action) {
       time: action.time,
       timeout: action.timeout,
     };
+  case PLAYER_DATA:
+    return {
+      ...state, ...action.payload };
   case RESET_SCORE:
     return {
       ...state,
