@@ -30,13 +30,6 @@ class Game extends Component {
   }
 
   componentDidUpdate() {
-    const { answeredAction, time } = this.props;
-    const reset = {
-      time: 30,
-      answered: false,
-      timeout: false,
-    };
-    if (time < 1) answeredAction(reset);
     this.scoreLocalStorage();
   }
 
@@ -72,8 +65,8 @@ class Game extends Component {
   }
 
   handleScore() {
-    const { scorePoints, APIQuestions, time } = this.props;
-    const { index, choice } = this.state;
+    const { scorePoints, APIQuestions } = this.props;
+    const { index, choice, time } = this.state;
     const TEN = 10;
     const hard = 3;
     const medium = 2;
@@ -109,15 +102,16 @@ class Game extends Component {
           time: 30,
           answered: false,
           timeout: false,
+          testeReset: false,
         };
         this.setState({ disableNextBtn: false });
-        console.log('action aconteceu', answeredAction(resetTime))
+        // console.log('action aconteceu', answeredAction(resetTime))
         return answeredAction(resetTime);
       });
     } else {
       this.setState({ disableNextBtn: false, clicked: true });
       this.handleScore();
-      // precisa setar clicked pq é a condição para o btn renderizar aqui - line 138
+      // precisa setar clicked pq é a condição para o btn renderizar aqui - line 152
       return history.push('/feedback');
     }
   }

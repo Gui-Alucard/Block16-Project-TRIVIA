@@ -8,6 +8,7 @@ class Timer extends React.Component {
     super(props);
 
     this.decreaseTime = this.decreaseTime.bind(this);
+    this.restei = this.restei.bind(this);
 
     const { time } = this.props;
     this.state = {
@@ -22,28 +23,45 @@ class Timer extends React.Component {
 
   componentDidUpdate() {
     const { timeLeft } = this.state;
-    const { answered } = this.props;
+    const { answered, testeReset } = this.props;
     const oneSecond = 1000;
     if (timeLeft > 0 && answered === false) setTimeout(this.decreaseTime, oneSecond);
-    // const action = {
-    //   time: 30,
-    //   answered: true,
-    //   timeout: true,
-    // };
-    // if (timeLeft < 1) answeredAction(action);
-    // Preciso de uma forma de dar esse dispatch uma unica vez e não dispará-lo
+    if (testeReset === true) this.restei();
   }
 
   componentWillUnmount() {
     const { timeLeft } = this.state;
-    if (timeLeft < 1) console.log('desmontou');
+    if (timeLeft < 1) this.setState({ timeLeft: 30 });
   }
 
   decreaseTime() {
     const { timeLeft } = this.state;
-    const { answered } = this.props;
-    if (timeLeft > 0) this.setState({ timeLeft: timeLeft - 1 });
-    if (answered === true) this.setState({ timeLeft: 30 }); // responsável por resetar o timer
+    const { testeReset, answeredAction, answered } = this.props;
+    if (timeLeft > 0) this.setState(({ timeLeft: timeLeft - 1 }), () => {
+      const { timeLeft } = this.state;
+      const action = {
+        time: 30,
+        answered: true,
+        timeout: true,
+        testeReset: true,
+      };
+      if (timeLeft < 1) answeredAction(action);
+    });
+    // console.log('executou', testeReset);
+    if (testeReset === true || answered === true) this.restei(); // responsável por resetar o timer
+  }
+
+  restei() {
+    this.setState(({ timeLeft: 30 }), () => {
+      const { testeReset, answeredAction } = this.props;
+      const action = {
+        time: 30,
+        answered: true,
+        timeout: true,
+        testeReset: false,
+      };
+      if (testeReset === true) answeredAction(action);
+    });
   }
 
   render() {
@@ -79,6 +97,7 @@ function mapStateToProps(state) {
     score: state.allQuestions.score,
     answered: state.allQuestions.answered,
     time: state.allQuestions.time,
+    testeReset: state.allQuestions.testeReset,
   };
 }
 

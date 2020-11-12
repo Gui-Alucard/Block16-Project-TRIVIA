@@ -48,6 +48,7 @@ export const answerAction = (payload) => ({
   time: payload.time,
   answered: payload.answered,
   timeout: payload.timeout,
+  testeReset: payload.testeReset,
 });
 
 export const playerData = (payload) => ({
