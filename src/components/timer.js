@@ -36,26 +36,25 @@ class Timer extends React.Component {
 
   decreaseTime() {
     const { timeLeft } = this.state;
-    const { testeReset, answeredAction, answered } = this.props;
+    const { answeredAction, answered } = this.props;
     if (timeLeft > 0) this.setState(({ timeLeft: timeLeft - 1 }), () => {
       const { timeLeft } = this.state;
       const action = {
-        time: 30,
+        time: timeLeft,
         answered: true,
         timeout: true,
         testeReset: true,
       };
-      if (timeLeft < 1) answeredAction(action);
+      if (timeLeft < 1 || answered === true) answeredAction(action);
     });
-    // console.log('executou', testeReset);
-    if (testeReset === true || answered === true) this.restei(); // responsável por resetar o timer
   }
 
   restei() {
+    const { timeLeft } = this.state;
     this.setState(({ timeLeft: 30 }), () => {
       const { testeReset, answeredAction } = this.props;
       const action = {
-        time: 30,
+        time: timeLeft,
         answered: true,
         timeout: true,
         testeReset: false,
@@ -67,11 +66,12 @@ class Timer extends React.Component {
   render() {
     const { timeLeft } = this.state;
     return (
-      <h4>
-        Tempo:
-        {' '}
+      <section className="timer-container">
+        <section className="timer-back" />
+        <p className="timer-number">
         { timeLeft }
-      </h4>
+        </p>
+      </section>
     );
   }
 }

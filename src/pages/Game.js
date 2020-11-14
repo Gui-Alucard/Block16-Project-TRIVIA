@@ -11,13 +11,11 @@ class Game extends Component {
   constructor(props) {
     super(props);
 
-    const { time } = this.props;
     this.state = {
       index: 0,
       choice: '',
       clicked: false,
       disableNextBtn: false,
-      time,
     };
 
     this.handleAnswer = this.handleAnswer.bind(this);
@@ -70,8 +68,8 @@ class Game extends Component {
   }
 
   handleScore() {
-    const { scorePoints, APIQuestions } = this.props;
-    const { index, choice, time } = this.state;
+    const { scorePoints, APIQuestions, time } = this.props;
+    const { index, choice } = this.state;
     const TEN = 10;
     const hard = 3;
     const medium = 2;
@@ -89,7 +87,6 @@ class Game extends Component {
       assertions: assertion,
     };
     scorePoints(respondida);
-    this.setState({ timeout: true });
   }
 
   handleClickButtonNext() {
@@ -116,7 +113,7 @@ class Game extends Component {
     } else {
       this.setState({ disableNextBtn: false, clicked: true });
       this.scoreStore();
-      // precisa setar clicked pq é a condição para o btn renderizar aqui - line 152
+      // precisa setar clicked pq é a condição para o btn renderizar aqui - line 154
       return history.push('/feedback');
     }
   }
@@ -133,42 +130,40 @@ class Game extends Component {
       <section className="game-container">
         <Header />
         <section className="game-question">
-          <section className="game-category">
-            <h3 data-testid="question-category">
-              {atob(APIQuestions[index].category)}
-            </h3>
-          </section>
-          <section className="game-text">
-            <section data-testid="question-text">
-              {atob(APIQuestions[index].question)}
+          <h3 className="question-category" data-testid="question-category">
+            {atob(APIQuestions[index].category)}
+          </h3>
+            <section className="game-answers-container">
+              <section className="question-text" data-testid="question-text">
+                {atob(APIQuestions[index].question)}
+              </section>
+              <section>
+                <Timer />
+              </section>
+              <Questions
+                APIQuestions={ APIQuestions }
+                indexDinamico={ index }
+                disabled={ timeout }
+                classCorrect={ clicked ? 'correct-answer' : 'btn-question' }
+                classWrong={ clicked ? 'wrong-answer' : 'btn-question' }
+                onClickCorrect={ () => this.handleAnswer('correct-answer') }
+                onClickWrong={ () => this.handleAnswer('wrong-answer') }
+              />
             </section>
+          <section className="game-btn-next">
+            { clicked || timeout === true
+              ? (
+                <button
+                  type="button"
+                  onClick={ () => this.handleClickButtonNext() }
+                  data-testid="btn-next"
+                  disabled={ disableNextBtn }
+                >
+              Próxima
+                </button>
+              )
+              : (<p />)}
           </section>
-        </section>
-        <Questions
-          APIQuestions={ APIQuestions }
-          indexDinamico={ index }
-          disabled={ timeout }
-          classCorrect={ clicked ? 'correct-answer' : 'btn-question' }
-          classWrong={ clicked ? 'wrong-answer' : 'btn-question' }
-          onClickCorrect={ () => this.handleAnswer('correct-answer') }
-          onClickWrong={ () => this.handleAnswer('wrong-answer') }
-        />
-        <section>
-          { clicked || timeout === true
-            ? (
-              <button
-                type="button"
-                onClick={ () => this.handleClickButtonNext() }
-                data-testid="btn-next"
-                disabled={ disableNextBtn }
-              >
-            Próxima
-              </button>
-            )
-            : (<p />)}
-        </section>
-        <section>
-          <Timer />
         </section>
       </section>
     );
@@ -195,6 +190,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 Game.defaultProps = {
   time: 30,
+  timeout: false,
 };
 
 Game.propTypes = {
@@ -202,7 +198,7 @@ Game.propTypes = {
   email: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
-  timeout: PropTypes.bool.isRequired,
+  timeout: PropTypes.bool,
   time: PropTypes.number,
   answeredAction: PropTypes.func.isRequired,
   scorePoints: PropTypes.func.isRequired,

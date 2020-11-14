@@ -57,11 +57,12 @@ class Questions extends Component {
 Questions.defaultProps = {
   classCorrect: 'btn-answer',
   classWrong: 'btn-answer',
+  disabled: false,
 };
 
 Questions.propTypes = {
   indexDinamico: PropTypes.number.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
   classCorrect: PropTypes.string,
   classWrong: PropTypes.string,
   onClickCorrect: PropTypes.func.isRequired,

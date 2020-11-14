@@ -1,9 +1,11 @@
 .game-container {
   border: 1px solid orange;
   background-color: #282c34;
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -30,6 +32,42 @@
   width: 100px;
 }
 
+.game-question {
+  border: 3px solid purple;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.question-category {
+  border: 3px solid green;
+  width: 290px;
+  text-align: center;
+}
+
+.question-text {
+  border: 3px solid yellow;
+  width: 350px;
+}
+
+.game-answers-container {
+  align-items: center;
+  border: 2px solid greenyellow;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.game-answers {
+  border: 1px solid greenyellow;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 300px;
+  width: 500px;
+}
+
 .btn-question {
   background-color: #bd93f9ff;
   border: none;
@@ -44,7 +82,6 @@
   height: 50px;
   margin: 8px 6px;
   outline: none;
-  width: 160px;
 }
 
 .correct-answer {
@@ -53,7 +90,6 @@
   height: 50px;
   margin: 8px 6px;
   outline: none;
-  width: 160px;
 }
 
 .wrong-answer {
@@ -62,7 +98,6 @@
   height: 50px;
   margin: 8px 6px;
   outline: none;
-  width: 160px;
 }
 
 .btn-question:disabled,
@@ -93,4 +128,49 @@
   box-shadow: 2px 3px 4px #474747;
   color: #505050;
   cursor: default;
+}
+
+.timer-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.timer-number {
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 50px;
+  text-align: center;
+  background-color: #282a36ff;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  margin: 0;
+  padding: 0;
+}
+
+.timer-back {
+  z-index: 0;
+  position: relative;
+  margin: 0 40px;
+  padding: 0;
+  animation: fade-border 1s infinite;
+  background-image: linear-gradient(80deg, #6272a4ff, #8be9fdff, #50fa7bff);
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+}
+
+@keyframes fade-border {
+  0% {
+    transform: rotate(360deg);
+  }
+  100%{
+    /* transform: rotate(1deg); */
+  }
 }
